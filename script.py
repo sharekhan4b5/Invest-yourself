@@ -389,7 +389,7 @@ def main1():
         ##    i = i+1
                 #orb_test()
                 #t3=threading.Thread(target=orb_test,args=())
-                if(not (datetime.datetime.now().minute%15)):
+                #if(not (datetime.datetime.now().minute%15)):
 
                     t1 = threading.Thread(target=inverted_hamm, args=(instrument_df,))
                     #t2 = threading.Thread(target=doji_bs_order, args=(1000,))
