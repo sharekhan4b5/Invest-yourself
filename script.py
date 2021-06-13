@@ -246,7 +246,8 @@ def main1():
                                     product=kite.PRODUCT_MIS,
                                     variety=kite.VARIETY_REGULAR)
                     print(orderId)"""
-                    text_message = token_name+" sold at lst_prc "+str(lst_prc)+" Target "+ str(round(lst_prc*0.991,1))+" SL "+ str(round(lst_prc*1.015,1))
+                    #text_message = token_name+" sold at lst_prc "+str(lst_prc)+" Target "+ str(round(lst_prc*0.991,1))+" SL "+ str(round(lst_prc*1.015,1))
+                    text_message = token_name+" sold at lst_prc "+str(lst_prc)
                     #print(text_message)
                     test = telegram_bot_sendtext(text_message)
                     print("Stock name",tkn_name,"last price ",lst_prc,"buy sell order count",buyOrderCount,sellOrderCount)
@@ -293,7 +294,8 @@ def main1():
                             variety=kite.VARIETY_REGULAR)
             print(orderId)"""
             #text_message="Buy order executed for the stock "+" "+token_name+"last price "+str(lst_prc)
-            text_message = token_name+" Bought at lst_prc "+str(lst_prc)+" Target "+ str(round(lst_prc*1.009,1))+" SL "+ str(round(lst_prc*0.985,1))
+           # text_message = token_name+" Bought at lst_prc "+str(lst_prc)+" Target "+ str(round(lst_prc*1.009,1))+" SL "+ str(round(lst_prc*0.985,1))
+            text_message = token_name+" Bought at lst_prc "+str(lst_prc)
             #print(text_message)
             test = telegram_bot_sendtext(text_message)
             print(test)    
