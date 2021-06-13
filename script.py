@@ -4,11 +4,11 @@ import asyncio
 import pytz
 from datetime import timedelta,date
 import datetime
+import time
 from kiteext import KiteExt
 import json
 import config
 import pandas as pd
-from time import sleep
 import os
 import numpy as np
 import threading
