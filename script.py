@@ -2,7 +2,7 @@
 import asyncio
 # from datetime import datetime
 import pytz
-from datetime import timedelta,time,date
+from datetime import timedelta,date
 import datetime
 from kiteext import KiteExt
 import json
