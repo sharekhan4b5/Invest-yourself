@@ -6,6 +6,7 @@ from datetime import timedelta,time,date
 import datetime
 from kiteext import KiteExt
 import json
+import config
 import pandas as pd
 from time import sleep
 import os
@@ -16,7 +17,7 @@ start=datetime.datetime.now()
 def main1():
     
     print('Running Algo')
-    user = json.loads(open('userzerodha.json', 'r').read().rstrip())
+    #user = json.loads(open('userzerodha.json', 'r').read().rstrip())
 
     # NOTE contents of above 'userzerodha.json' must be as below
     # {
