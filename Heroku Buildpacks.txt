@@ -1,0 +1,3 @@
+python
+
+https://github.com/numrut/heroku-buildpack-python-talib.git
