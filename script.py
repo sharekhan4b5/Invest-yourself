@@ -25,21 +25,24 @@ def main1():
     #     "pin": "123456"
     # }
 
+    
+    
+    #user = json.loads(open('userzerodha.json', 'r').read().rstrip())
+    #print(user)
     kite = KiteExt()
-    kite.login_with_credentials(
-        userid=user['user_id'], password=user['password'], pin=user['pin'])
+    #kite.login_with_credentials(
+    #userid=user['user_id'], password=user['password'], twofa=user['twofa'])
+    kite.login_with_credentials(userid=config.username, password=config.password, pin=config.pin)
+    with open('enctoken.txt', 'w') as wr:
+          wr.write(kite.enctoken)
 
-    profile = kite.profile()
-    print( '\nlogin successful for ',profile['user_name'].upper(),'\n')
-
-    print(profile)
+    print(kite.profile())
     enctoken = open('enctoken.txt', 'r').read().rstrip()
     print(os.getcwd(),enctoken)
-    
-
+    #kite = KiteExt()
     print(enctoken)
-    #code whatever logic you want for the running here
     kite.set_headers(enctoken)
+    ##print(kite.profile())
     instruments = kite.instruments(exchange="NSE")
     
     true_range_startdt = datetime.datetime.now() - timedelta(days=200)
