@@ -246,9 +246,8 @@ def main1():
                                     product=kite.PRODUCT_MIS,
                                     variety=kite.VARIETY_REGULAR)
                     print(orderId)"""
-                    order_low=str(DATABASE_DOJI[currentToken]['low'].iloc[-1])
-                    text_message = token_name+" sold at lst_prc "+str(lst_prc)+" Target "+ str(round(lst_prc*0.991,1))+" low val: "+order_low+" SL "+ str(round(lst_prc*1.015,1))
-                    print(text_message)
+                    text_message = token_name+" sold at lst_prc "+str(lst_prc)+" Target "+ str(round(lst_prc*0.991,1))+" SL "+ str(round(lst_prc*1.015,1))
+                    #print(text_message)
                     test = telegram_bot_sendtext(text_message)
                     print("Stock name",tkn_name,"last price ",lst_prc,"buy sell order count",buyOrderCount,sellOrderCount)
         elif(lst_prc>DATABASE_DOJI[currentToken]['high'].iloc[-1] and checkBuy):
@@ -294,9 +293,8 @@ def main1():
                             variety=kite.VARIETY_REGULAR)
             print(orderId)"""
             #text_message="Buy order executed for the stock "+" "+token_name+"last price "+str(lst_prc)
-            order_high=str(DATABASE_DOJI[currentToken]['high'].iloc[-1])
-            text_message = token_name+" Bought at lst_prc "+str(lst_prc)+" Target "+ str(round(lst_prc*1.009,1))+" high val: "+order_high+" SL "+ str(round(lst_prc*0.985,1))
-            print(text_message)
+            text_message = token_name+" Bought at lst_prc "+str(lst_prc)+" Target "+ str(round(lst_prc*1.009,1))+" SL "+ str(round(lst_prc*0.985,1))
+            #print(text_message)
             test = telegram_bot_sendtext(text_message)
             print(test)    
 
