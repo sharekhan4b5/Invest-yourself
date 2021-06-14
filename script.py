@@ -52,7 +52,7 @@ def main1():
     true_range_startdt = true_range_startdt.replace(hour = 9,minute=15,second=0)
     true_range_startdt = true_range_startdt.strftime('%Y-%m-%d %H:%M:%S')
 
-    true_range_enddt = datetime.datetime.now() - timedelta(days=2)
+    true_range_enddt = datetime.datetime.now()
     enddt= true_range_enddt
     true_range_enddt = true_range_enddt.replace(hour = 15,minute=29,second=59)
     true_range_enddt = true_range_enddt.strftime('%Y-%m-%d %H:%M:%S')
@@ -63,7 +63,7 @@ def main1():
     #token_name=instrument_df[instrument_df['token']==1207553].symbol
 
     # %%
-    today=(datetime.datetime.now() - timedelta(days=2)).date()
+    today=(datetime.datetime.now()).date()
     today=today.strftime('%Y-%m-%d')
 
     # %%
@@ -247,7 +247,7 @@ def main1():
                                     variety=kite.VARIETY_REGULAR)
                     print(orderId)"""
                     #text_message = token_name+" sold at lst_prc "+str(lst_prc)+" Target "+ str(round(lst_prc*0.991,1))+" SL "+ str(round(lst_prc*1.015,1))
-                    text_message = "Testing Telegram bot"
+                    text_message = token_name+" sold at "+str(lst_prc)+" Target "+ str(round(lst_prc*0.991,1))+" SL "+ str(round(lst_prc*1.015,1))
                     #print(text_message)
                     test = telegram_bot_sendtext(text_message)
                     print("Stock name",tkn_name,"last price ",lst_prc,"buy sell order count",buyOrderCount,sellOrderCount)
@@ -295,7 +295,7 @@ def main1():
             print(orderId)"""
             #text_message="Buy order executed for the stock "+" "+token_name+"last price "+str(lst_prc)
            # text_message = token_name+" Bought at lst_prc "+str(lst_prc)+" Target "+ str(round(lst_prc*1.009,1))+" SL "+ str(round(lst_prc*0.985,1))
-            text_message = "Testing Telegram bot"
+            text_message = token_name+" Bought  at "+str(lst_prc)+" Target "+ str(round(lst_prc*1.009,1))+" SL "+ str(round(lst_prc*0.985,1))
             #print(text_message)
             test = telegram_bot_sendtext(text_message)
             print(test)    
@@ -384,7 +384,7 @@ def main1():
     # %%
     while(datetime.datetime.now(pytz.timezone('Asia/Kolkata'))<datetime.datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=9,minute=16)):
             pass        
-    while(datetime.datetime.now(pytz.timezone('Asia/Kolkata'))<datetime.datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=21,minute=50)):
+    while(datetime.datetime.now(pytz.timezone('Asia/Kolkata'))<datetime.datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=15,minute=30)):
         #    doji_buy_sell()
         ##    i = i+1
                 #orb_test()
@@ -397,7 +397,7 @@ def main1():
                     t1.start()
                     #t2.start()
                     t1.join()
-                    break
+                    
                 # t2.join()
 
 
