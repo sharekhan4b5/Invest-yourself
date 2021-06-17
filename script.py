@@ -122,7 +122,7 @@ def main1():
                 #2: high
                 #3: low
                 #4: close
-                if abs(ticker_df.iloc[index[0],4]-ticker_df.iloc[index[0],1])<abs(ticker_df.iloc[index[0],2]-ticker_df.iloc[index[0],3])*0.25 and abs(ticker_df.iloc[index[0],2]-ticker_df.iloc[index[0],1])>abs(ticker_df.iloc[index[0],1]-ticker_df.iloc[index[0],3]):
+                if abs(ticker_df.iloc[index[0],4]-ticker_df.iloc[index[0],1])<abs(ticker_df.iloc[index[0],2]-ticker_df.iloc[index[0],3])*0.2 and abs(ticker_df.iloc[index[0],2]-ticker_df.iloc[index[0],1])>abs(ticker_df.iloc[index[0],1]-ticker_df.iloc[index[0],3]):
                     lookback.append(dat)
                     #print(dat)    
         return lookback
