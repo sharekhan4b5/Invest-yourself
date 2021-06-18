@@ -148,9 +148,9 @@ def main1():
         return res
 
     # %%
-    def doji_bs_order(capital_per_tick,DATABASE_DOJI,token):
-        global tokens_name_doji
-
+    def doji_bs_order(capital_per_tick,DATABASE_DOJI):
+        #global tokens_name_doji
+        
         ihtokens= list(DATABASE_DOJI.keys())
         #print(tokenName_NEG)
         #print(DATABASE_NEG)
@@ -158,147 +158,149 @@ def main1():
         if(len(ihtokens)==0):
           return
         print(DATABASE_DOJI[token])
-        #for token in ihtokens:
-        token_name=instrument_df[instrument_df['token']==token].symbol
-        token_name=list(token_name)
-        token_name=token_name[0]
-        currentToken = token
-        tkn_name="NSE:"+token_name
-        orderBook = kite.orders()
-        checkBuy = 1
-        checkSell = 1
-        buyOrderCount = 0
-        sellOrderCount = 0
-        lastOrderType = None
-        lastOrderTs = datetime.datetime(2021,1,1)
-        time.sleep(1)
-        for x in orderBook:
+        for token in ihtokens:
+            if(DATABASE_DOJI[token].iloc[-1].date[:10]!=today):
+                continue
+            token_name=instrument_df[instrument_df['token']==token].symbol
+            token_name=list(token_name)
+            token_name=token_name[0]
+            currentToken = token
+            tkn_name="NSE:"+token_name
+            orderBook = kite.orders()
+            checkBuy = 1
+            checkSell = 1
+            buyOrderCount = 0
+            sellOrderCount = 0
+            lastOrderType = None
+            lastOrderTs = datetime.datetime(2021,1,1)
             time.sleep(1)
-            if(x['tradingsymbol']==token_name and x['status']=='COMPLETE'):
-                if(x['transaction_type']=='BUY'):
-                    buyOrderCount += 1
-                    if(x['order_timestamp']>lastOrderTs):
-                        lastOrderTs = x['order_timestamp']
-                        lastOrderType = 'BUY'
-                elif(x['transaction_type']=='SELL'):
-                    sellOrderCount += 1
-                    if(x['order_timestamp']>lastOrderTs):
-                        lastOrderTs = x['order_timestamp']
-                        lastOrderType = 'SELL'
+            for x in orderBook:
+                time.sleep(1)
+                if(x['tradingsymbol']==token_name and x['status']=='COMPLETE'):
+                    if(x['transaction_type']=='BUY'):
+                        buyOrderCount += 1
+                        if(x['order_timestamp']>lastOrderTs):
+                            lastOrderTs = x['order_timestamp']
+                            lastOrderType = 'BUY'
+                    elif(x['transaction_type']=='SELL'):
+                        sellOrderCount += 1
+                        if(x['order_timestamp']>lastOrderTs):
+                            lastOrderTs = x['order_timestamp']
+                            lastOrderType = 'SELL'
 
-        if(sellOrderCount>buyOrderCount):
-            checkSell = 0
-        elif(sellOrderCount<buyOrderCount):
-            checkBuy = 0
-        else:
-            if(lastOrderType=='BUY'):
-                checkSell=0
-            elif(lastOrderType=='SELL'):
-                checkBuy=0
-            ordersLeft = [x['order_id'] for x in kite.orders() if (x['status']=='OPEN' or x['status']=='PENDING' or x['status']=='TRIGGER PENDING') and x['tradingsymbol']==token_name]
-            for x in ordersLeft:
-                kite.cancel_order(variety=kite.VARIETY_REGULAR,order_id=x)
-                print("order cancelled")    
-            time.sleep(1)    
-        #print(currentToken,buyOrderCount,sellOrderCount)
-        time.sleep(1)
-        ltp_price=kite.ltp(tkn_name)
-        lst_prc = ltp_price[tkn_name]['last_price']  
-        print("DOJI BUY SELL Stock name",tkn_name,"last price ",lst_prc,"buy sell order count",buyOrderCount,sellOrderCount)
-        #qty = round(capital_per_tick/lst_prc)
-        qty=1
-        print(qty,capital_per_tick,lst_prc)
-        if(lst_prc<DATABASE_DOJI[currentToken]['low'].iloc[-1] and checkSell):
-                    #DATABASE[currentToken]['sellonce'] = 0
-                    qty=1
-                    #print('o2',currentToken,token_name,qty)
-                    """orderId = kite.place_order(variety=kite.VARIETY_REGULAR, 
-                                exchange=kite.EXCHANGE_NSE, 
-                                tradingsymbol=token_name, 
-                                transaction_type=kite.TRANSACTION_TYPE_SELL, 
-                                quantity=qty, 
-                                product=kite.PRODUCT_MIS, 
-                                order_type=kite.ORDER_TYPE_MARKET, 
-                                price=None, 
-                                validity=None, 
-                                disclosed_quantity=None, 
-                                trigger_price=None, 
-                                squareoff=None,
-                                stoploss=None,
-                                trailing_stoploss=None)
-                    time.sleep(1)
-                    kite.place_order(tradingsymbol=token_name,
-                                    exchange=kite.EXCHANGE_NSE,
-                                    transaction_type=kite.TRANSACTION_TYPE_BUY,
-                                    quantity=qty,
-                                    price = round(lst_prc*0.995,1),
-                                    order_type=kite.ORDER_TYPE_LIMIT,
-                                    product=kite.PRODUCT_MIS,
-                                    variety=kite.VARIETY_REGULAR)
-                    time.sleep(1)
-                    kite.place_order(tradingsymbol=token_name,
-                                    exchange=kite.EXCHANGE_NSE,
-                                    transaction_type=kite.TRANSACTION_TYPE_BUY,
-                                    quantity=qty,
-                                    order_type=kite.ORDER_TYPE_SLM,
-                                    price=round(DATABASE_DOJI[currentToken]['high'].iloc[-1],1),
-                                    trigger_price = round(DATABASE_DOJI[currentToken]['high'].iloc[-1],1),
-                                    product=kite.PRODUCT_MIS,
-                                    variety=kite.VARIETY_REGULAR)
-                    print(orderId)"""
-                    #text_message = token_name+" sold at lst_prc "+str(lst_prc)+" Target "+ str(round(lst_prc*0.991,1))+" SL "+ str(round(lst_prc*1.015,1))
-                    text_message = token_name+" sold at "+str(lst_prc)+" Target "+ str(round(lst_prc*0.991,1))+" SL "+ str(round(lst_prc*1.015,1))
-                    #print(text_message)
-                    test = telegram_bot_sendtext(text_message)
-                    print("Stock name",tkn_name,"last price ",lst_prc,"buy sell order count",buyOrderCount,sellOrderCount)
-        elif(lst_prc>DATABASE_DOJI[currentToken]['high'].iloc[-1] and checkBuy):
-            #DATABASE[currentToken]['buyonce'] = 0
-            #qty = round(capital_per_tick/kite.ltp(token_name))
-            qty=1
-            print(qty,capital_per_tick,lst_prc)
-            print('o1',currentToken,token_name,qty)
-            """orderId = kite.place_order(variety=kite.VARIETY_REGULAR, 
-                        exchange=kite.EXCHANGE_NSE, 
-                        tradingsymbol=token_name, 
-                        transaction_type=kite.TRANSACTION_TYPE_BUY, 
-                        quantity=qty, 
-                        product=kite.PRODUCT_MIS, 
-                        order_type=kite.ORDER_TYPE_MARKET, 
-                        price=None, 
-                        validity=None, 
-                        disclosed_quantity=None, 
-                        trigger_price=None, 
-                        squareoff=None, 
-                        stoploss=None, 
-                        trailing_stoploss=None)
+            if(sellOrderCount>buyOrderCount):
+                checkSell = 0
+            elif(sellOrderCount<buyOrderCount):
+                checkBuy = 0
+            else:
+                if(lastOrderType=='BUY'):
+                    checkSell=0
+                elif(lastOrderType=='SELL'):
+                    checkBuy=0
+                ordersLeft = [x['order_id'] for x in kite.orders() if (x['status']=='OPEN' or x['status']=='PENDING' or x['status']=='TRIGGER PENDING') and x['tradingsymbol']==token_name]
+                for x in ordersLeft:
+                    kite.cancel_order(variety=kite.VARIETY_REGULAR,order_id=x)
+                    print("order cancelled")    
+                time.sleep(1)    
+            #print(currentToken,buyOrderCount,sellOrderCount)
             time.sleep(1)
             ltp_price=kite.ltp(tkn_name)
-            lst_prc = ltp_price[tkn_name]['last_price']
-            kite.place_order(tradingsymbol=token_name,
-                            exchange=kite.EXCHANGE_NSE,
-                            transaction_type=kite.TRANSACTION_TYPE_SELL,
-                            quantity=qty,
-                            price = round(lst_prc*1.005,1),
-                            order_type=kite.ORDER_TYPE_LIMIT,
-                            product=kite.PRODUCT_MIS,
-                            variety=kite.VARIETY_REGULAR)
-            time.sleep(1)
-            kite.place_order(tradingsymbol=token_name,
-                            exchange=kite.EXCHANGE_NSE,
-                            transaction_type=kite.TRANSACTION_TYPE_SELL,
-                            quantity=qty,
-                            order_type=kite.ORDER_TYPE_SLM,
-                            price=round(DATABASE_DOJI[currentToken]['low'].iloc[-1],1),
-                            trigger_price=round(DATABASE_DOJI[currentToken]['low'].iloc[-1],1),
-                            product=kite.PRODUCT_MIS,
-                            variety=kite.VARIETY_REGULAR)
-            print(orderId)"""
-            #text_message="Buy order executed for the stock "+" "+token_name+"last price "+str(lst_prc)
-           # text_message = token_name+" Bought at lst_prc "+str(lst_prc)+" Target "+ str(round(lst_prc*1.009,1))+" SL "+ str(round(lst_prc*0.985,1))
-            text_message = token_name+" Bought  at "+str(lst_prc)+" Target "+ str(round(lst_prc*1.009,1))+" SL "+ str(round(lst_prc*0.985,1))
-            #print(text_message)
-            test = telegram_bot_sendtext(text_message)
-            print(test)    
+            lst_prc = ltp_price[tkn_name]['last_price']  
+            print("DOJI BUY SELL Stock name",tkn_name,"last price ",lst_prc,"buy sell order count",buyOrderCount,sellOrderCount)
+            #qty = round(capital_per_tick/lst_prc)
+            qty=1
+            print(qty,capital_per_tick,lst_prc)
+            if(lst_prc<DATABASE_DOJI[currentToken]['low'].iloc[-1] and checkSell):
+                        #DATABASE[currentToken]['sellonce'] = 0
+                        qty=1
+                        #print('o2',currentToken,token_name,qty)
+                        """orderId = kite.place_order(variety=kite.VARIETY_REGULAR, 
+                                    exchange=kite.EXCHANGE_NSE, 
+                                    tradingsymbol=token_name, 
+                                    transaction_type=kite.TRANSACTION_TYPE_SELL, 
+                                    quantity=qty, 
+                                    product=kite.PRODUCT_MIS, 
+                                    order_type=kite.ORDER_TYPE_MARKET, 
+                                    price=None, 
+                                    validity=None, 
+                                    disclosed_quantity=None, 
+                                    trigger_price=None, 
+                                    squareoff=None,
+                                    stoploss=None,
+                                    trailing_stoploss=None)
+                        time.sleep(1)
+                        kite.place_order(tradingsymbol=token_name,
+                                        exchange=kite.EXCHANGE_NSE,
+                                        transaction_type=kite.TRANSACTION_TYPE_BUY,
+                                        quantity=qty,
+                                        price = round(lst_prc*0.995,1),
+                                        order_type=kite.ORDER_TYPE_LIMIT,
+                                        product=kite.PRODUCT_MIS,
+                                        variety=kite.VARIETY_REGULAR)
+                        time.sleep(1)
+                        kite.place_order(tradingsymbol=token_name,
+                                        exchange=kite.EXCHANGE_NSE,
+                                        transaction_type=kite.TRANSACTION_TYPE_BUY,
+                                        quantity=qty,
+                                        order_type=kite.ORDER_TYPE_SLM,
+                                        price=round(DATABASE_DOJI[currentToken]['high'].iloc[-1],1),
+                                        trigger_price = round(DATABASE_DOJI[currentToken]['high'].iloc[-1],1),
+                                        product=kite.PRODUCT_MIS,
+                                        variety=kite.VARIETY_REGULAR)
+                        print(orderId)"""
+                        #text_message = token_name+" sold at lst_prc "+str(lst_prc)+" Target "+ str(round(lst_prc*0.991,1))+" SL "+ str(round(lst_prc*1.015,1))
+                        text_message = token_name+" sold at "+str(lst_prc)+" Target "+ str(round(lst_prc*0.991,1))+" SL "+ str(round(lst_prc*1.015,1))
+                        #print(text_message)
+                        test = telegram_bot_sendtext(text_message)
+                        print("Stock name",tkn_name,"last price ",lst_prc,"buy sell order count",buyOrderCount,sellOrderCount)
+            elif(lst_prc>DATABASE_DOJI[currentToken]['high'].iloc[-1] and checkBuy):
+                #DATABASE[currentToken]['buyonce'] = 0
+                #qty = round(capital_per_tick/kite.ltp(token_name))
+                qty=1
+                print(qty,capital_per_tick,lst_prc)
+                print('o1',currentToken,token_name,qty)
+                """orderId = kite.place_order(variety=kite.VARIETY_REGULAR, 
+                            exchange=kite.EXCHANGE_NSE, 
+                            tradingsymbol=token_name, 
+                            transaction_type=kite.TRANSACTION_TYPE_BUY, 
+                            quantity=qty, 
+                            product=kite.PRODUCT_MIS, 
+                            order_type=kite.ORDER_TYPE_MARKET, 
+                            price=None, 
+                            validity=None, 
+                            disclosed_quantity=None, 
+                            trigger_price=None, 
+                            squareoff=None, 
+                            stoploss=None, 
+                            trailing_stoploss=None)
+                time.sleep(1)
+                ltp_price=kite.ltp(tkn_name)
+                lst_prc = ltp_price[tkn_name]['last_price']
+                kite.place_order(tradingsymbol=token_name,
+                                exchange=kite.EXCHANGE_NSE,
+                                transaction_type=kite.TRANSACTION_TYPE_SELL,
+                                quantity=qty,
+                                price = round(lst_prc*1.005,1),
+                                order_type=kite.ORDER_TYPE_LIMIT,
+                                product=kite.PRODUCT_MIS,
+                                variety=kite.VARIETY_REGULAR)
+                time.sleep(1)
+                kite.place_order(tradingsymbol=token_name,
+                                exchange=kite.EXCHANGE_NSE,
+                                transaction_type=kite.TRANSACTION_TYPE_SELL,
+                                quantity=qty,
+                                order_type=kite.ORDER_TYPE_SLM,
+                                price=round(DATABASE_DOJI[currentToken]['low'].iloc[-1],1),
+                                trigger_price=round(DATABASE_DOJI[currentToken]['low'].iloc[-1],1),
+                                product=kite.PRODUCT_MIS,
+                                variety=kite.VARIETY_REGULAR)
+                print(orderId)"""
+                #text_message="Buy order executed for the stock "+" "+token_name+"last price "+str(lst_prc)
+               # text_message = token_name+" Bought at lst_prc "+str(lst_prc)+" Target "+ str(round(lst_prc*1.009,1))+" SL "+ str(round(lst_prc*0.985,1))
+                text_message = token_name+" Bought  at "+str(lst_prc)+" Target "+ str(round(lst_prc*1.009,1))+" SL "+ str(round(lst_prc*0.985,1))
+                #print(text_message)
+                test = telegram_bot_sendtext(text_message)
+                print(test)    
 
 
     # %%
@@ -313,6 +315,7 @@ def main1():
                 #print(instrument_df.loc[instrument_df['token']==token,'symbol'])
                 #file1.write(instrument_df[instrument_df['token']==token]['symbol'].to_list()[0]+"\n")
                 df_hist=kite.historical_data(token,true_range_startdt,true_range_enddt,'15minute')
+                time.sleep(0.5)
                 #print(df_hist)
                 df_hist_day=DATABASE[token]
                 ticker_df=pd.DataFrame.from_dict(df_hist, orient='columns', dtype=None)
@@ -350,16 +353,11 @@ def main1():
                                 if(result.iloc[np.where(result['date'].isin(last_20))]!=DATABASE_DOJI[token]):
                                     DATABASE_DOJI[token]=result.iloc[np.where(result['date'].isin(last_20))]
                                     #print(DATABASE_DOJI[token].iloc[-1].date[:10],today)
-                                    if(DATABASE_DOJI[token].iloc[-1].date[:10]==today):
-                                        doji_bs_order(1000,DATABASE_DOJI,token)
-                                        print("stock name: ",token," IH candle time: ",DATABASE_DOJI[token].iloc[-1].date," low: ",DATABASE_DOJI[token].iloc[-1].low," high: ",DATABASE_DOJI[token].iloc[-1].high)
+                                    
                             else:
                                 DATABASE_DOJI[token]=result.iloc[np.where(result['date'].isin(last_20))]
                                 #print(DATABASE_DOJI[token].iloc[-1].date[:10],today)
-                                if(DATABASE_DOJI[token].iloc[-1].date[:10]==today):
-                                    doji_bs_order(1000,DATABASE_DOJI,token)
-                                    print("stock name: ",token," IH candle time: ",DATABASE_DOJI[token].iloc[-1].date," low: ",DATABASE_DOJI[token].iloc[-1].low," high: ",DATABASE_DOJI[token].iloc[-1].high)
-
+                                
                             #file1.writelines(last_20)
                             #file1.write("\n")
                         prev_day = day
@@ -394,13 +392,13 @@ def main1():
 
 
                     t1 = threading.Thread(target=inverted_hamm, args=(instrument_df,))
-                    #t2 = threading.Thread(target=doji_bs_order, args=(1000,))
+                    t2 = threading.Thread(target=doji_bs_order, args=(1000,DATABASE_DOJI,))
 
                     t1.start()
-                    #t2.start()
+                    t2.start()
                     t1.join()
                     
-                # t2.join()
+                    t2.join()
 
 
 
