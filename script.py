@@ -157,8 +157,9 @@ def main1():
         print("Inverted hammer tokens",ihtokens)
         if(len(ihtokens)==0):
           return
-        print(DATABASE_DOJI[token])
+        
         for token in ihtokens:
+            print(DATABASE_DOJI[token])
             if(DATABASE_DOJI[token].iloc[-1].date[:10]!=today):
                 continue
             token_name=instrument_df[instrument_df['token']==token].symbol
@@ -390,18 +391,17 @@ def main1():
                 #mints=[13,28,43,58]
                 #if(datetime.datetime.now(pytz.timezone('Asia/Kolkata')).minute in mints):
 
-                    inverted_hamm(instrument_df)
-                    print(DATABASE_DOJI)
-                    doji_bs_order(1000,DATABASE_DOJI)
-                    #t1 = threading.Thread(target=inverted_hamm, args=(instrument_df,))
-                    #t2 = threading.Thread(target=doji_bs_order, args=(1000,DATABASE_DOJI,))
+                    #inverted_hamm(instrument_df)
+                    #print(DATABASE_DOJI)
+                    #doji_bs_order(1000,DATABASE_DOJI)
+                    t1 = threading.Thread(target=inverted_hamm, args=(instrument_df,))
+                    t2 = threading.Thread(target=doji_bs_order, args=(1000,DATABASE_DOJI,))
 
-                    #t1.start()
-                    #t2.start()
-                    #t1.join()
+                    t1.start()
+                    t2.start()
+                    t1.join()
+                    t2.join()
                     
-                    #t2.join()
-                    break
 
 
 
