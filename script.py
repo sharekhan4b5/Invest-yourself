@@ -52,7 +52,7 @@ def main1():
     true_range_startdt = true_range_startdt.replace(hour = 9,minute=15,second=0)
     true_range_startdt = true_range_startdt.strftime('%Y-%m-%d %H:%M:%S')
 
-    true_range_enddt = datetime.datetime.now() - timedelta(days=1)
+    true_range_enddt = datetime.datetime.now() 
     enddt= true_range_enddt
     true_range_enddt = true_range_enddt.replace(hour = 15,minute=29,second=59)
     true_range_enddt = true_range_enddt.strftime('%Y-%m-%d %H:%M:%S')
@@ -63,7 +63,7 @@ def main1():
     #token_name=instrument_df[instrument_df['token']==1207553].symbol
 
     # %%
-    today=(datetime.datetime.now() - timedelta(days=1)).date()
+    today=(datetime.datetime.now()).date()
     today=today.strftime('%Y-%m-%d')
 
     # %%
@@ -382,7 +382,7 @@ def main1():
     # %%
     while(datetime.datetime.now(pytz.timezone('Asia/Kolkata'))<datetime.datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=9,minute=16)):
             pass        
-    while(datetime.datetime.now(pytz.timezone('Asia/Kolkata'))<datetime.datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=22,minute=30)):
+    while(datetime.datetime.now(pytz.timezone('Asia/Kolkata'))<datetime.datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=23,minute=30)):
         #    doji_buy_sell()
         ##    i = i+1
                 #orb_test()
