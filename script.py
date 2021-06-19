@@ -390,15 +390,16 @@ def main1():
                 #mints=[13,28,43,58]
                 #if(datetime.datetime.now(pytz.timezone('Asia/Kolkata')).minute in mints):
 
+                    inverted_hamm(instrument_df)
+                    doji_bs_order(1000,DATABASE_DOJI)
+                    #t1 = threading.Thread(target=inverted_hamm, args=(instrument_df,))
+                    #t2 = threading.Thread(target=doji_bs_order, args=(1000,DATABASE_DOJI,))
 
-                    t1 = threading.Thread(target=inverted_hamm, args=(instrument_df,))
-                    t2 = threading.Thread(target=doji_bs_order, args=(1000,DATABASE_DOJI,))
-
-                    t1.start()
-                    t2.start()
-                    t1.join()
+                    #t1.start()
+                    #t2.start()
+                    #t1.join()
                     
-                    t2.join()
+                    #t2.join()
                     break
 
 
