@@ -382,7 +382,7 @@ def main1():
     # %%
     while(datetime.datetime.now(pytz.timezone('Asia/Kolkata'))<datetime.datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=9,minute=16)):
             pass        
-    while(datetime.datetime.now(pytz.timezone('Asia/Kolkata'))<datetime.datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=20,minute=30)):
+    while(datetime.datetime.now(pytz.timezone('Asia/Kolkata'))<datetime.datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=22,minute=30)):
         #    doji_buy_sell()
         ##    i = i+1
                 #orb_test()
@@ -391,6 +391,7 @@ def main1():
                 #if(datetime.datetime.now(pytz.timezone('Asia/Kolkata')).minute in mints):
 
                     inverted_hamm(instrument_df)
+                    print(DATABASE_DOJI)
                     doji_bs_order(1000,DATABASE_DOJI)
                     #t1 = threading.Thread(target=inverted_hamm, args=(instrument_df,))
                     #t2 = threading.Thread(target=doji_bs_order, args=(1000,DATABASE_DOJI,))
