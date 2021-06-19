@@ -52,7 +52,7 @@ def main1():
     true_range_startdt = true_range_startdt.replace(hour = 9,minute=15,second=0)
     true_range_startdt = true_range_startdt.strftime('%Y-%m-%d %H:%M:%S')
 
-    true_range_enddt = datetime.datetime.now()
+    true_range_enddt = datetime.datetime.now() - timedelta(days=1)
     enddt= true_range_enddt
     true_range_enddt = true_range_enddt.replace(hour = 15,minute=29,second=59)
     true_range_enddt = true_range_enddt.strftime('%Y-%m-%d %H:%M:%S')
@@ -63,7 +63,7 @@ def main1():
     #token_name=instrument_df[instrument_df['token']==1207553].symbol
 
     # %%
-    today=(datetime.datetime.now()).date()
+    today=(datetime.datetime.now() - timedelta(days=1)).date()
     today=today.strftime('%Y-%m-%d')
 
     # %%
@@ -315,7 +315,7 @@ def main1():
                 #print(instrument_df.loc[instrument_df['token']==token,'symbol'])
                 #file1.write(instrument_df[instrument_df['token']==token]['symbol'].to_list()[0]+"\n")
                 df_hist=kite.historical_data(token,true_range_startdt,true_range_enddt,'15minute')
-                time.sleep(0.5)
+                time.sleep(1)
                 #print(df_hist)
                 df_hist_day=DATABASE[token]
                 ticker_df=pd.DataFrame.from_dict(df_hist, orient='columns', dtype=None)
@@ -382,13 +382,13 @@ def main1():
     # %%
     while(datetime.datetime.now(pytz.timezone('Asia/Kolkata'))<datetime.datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=9,minute=16)):
             pass        
-    while(datetime.datetime.now(pytz.timezone('Asia/Kolkata'))<datetime.datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=15,minute=30)):
+    while(datetime.datetime.now(pytz.timezone('Asia/Kolkata'))<datetime.datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=20,minute=30)):
         #    doji_buy_sell()
         ##    i = i+1
                 #orb_test()
                 #t3=threading.Thread(target=orb_test,args=())
-                mints=[13,28,43,58]
-                if(datetime.datetime.now(pytz.timezone('Asia/Kolkata')).minute in mints):
+                #mints=[13,28,43,58]
+                #if(datetime.datetime.now(pytz.timezone('Asia/Kolkata')).minute in mints):
 
 
                     t1 = threading.Thread(target=inverted_hamm, args=(instrument_df,))
@@ -399,7 +399,7 @@ def main1():
                     t1.join()
                     
                     t2.join()
-
+                    break
 
 
 
