@@ -383,25 +383,26 @@ def main1():
     # %%
     while(datetime.datetime.now(pytz.timezone('Asia/Kolkata'))<datetime.datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=9,minute=16)):
             pass        
-    while(datetime.datetime.now(pytz.timezone('Asia/Kolkata'))<datetime.datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=23,minute=30)):
+    while(datetime.datetime.now(pytz.timezone('Asia/Kolkata'))<datetime.datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=15,minute=30)):
         #    doji_buy_sell()
         ##    i = i+1
                 #orb_test()
                 #t3=threading.Thread(target=orb_test,args=())
-                #mints=[13,28,43,58]
-                #if(datetime.datetime.now(pytz.timezone('Asia/Kolkata')).minute in mints):
+                mints=[13,28,43,58]
+                if(datetime.datetime.now(pytz.timezone('Asia/Kolkata')).minute in mints):
 
                     #inverted_hamm(instrument_df)
                     #print(DATABASE_DOJI)
                     #doji_bs_order(1000,DATABASE_DOJI)
                     t1 = threading.Thread(target=inverted_hamm, args=(instrument_df,))
-                    t2 = threading.Thread(target=doji_bs_order, args=(1000,DATABASE_DOJI,))
+                    
 
                     t1.start()
-                    t2.start()
-                    t1.join()
-                    t2.join()
                     
+                    t1.join()
+                t2 = threading.Thread(target=doji_bs_order, args=(1000,DATABASE_DOJI,))
+                t2.start()
+                t2.join()
 
 
 
