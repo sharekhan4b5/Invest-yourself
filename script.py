@@ -68,15 +68,20 @@ def main1():
 
     # %%
     DATABASE={}
+    flag={}
+    
     for token in instrument_df['token']:
         df_hist_day=kite.historical_data(token,true_range_startdt,true_range_enddt,'day')
         #print(data)
+        flag[token]=0
         DATABASE[token] = df_hist_day
     end=datetime.datetime.now()
     print(end-start)
 
 
     # %%
+    
+    
     def telegram_bot_sendtext(bot_message):
         bot_token = '1772481683:AAGCtefuhSLBeRtNdFxRYkLX-a9eG8H5qyY'
         bot_chatID = '-1001253024203'
@@ -160,8 +165,9 @@ def main1():
         
         for token in ihtokens:
             print(DATABASE_DOJI[token])
-            if(DATABASE_DOJI[token].iloc[-1].date[:10]!=today):
+            if(DATABASE_DOJI[token].iloc[-1].date[:10]!=today) or flag[token]==1:
                 continue
+            flag[token]=1
             token_name=instrument_df[instrument_df['token']==token].symbol
             token_name=list(token_name)
             token_name=token_name[0]
