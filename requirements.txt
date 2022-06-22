@@ -20,7 +20,7 @@ incremental==17.5.0
 kiteconnect==3.9.2
 lxml==4.6.3
 nsepy==0.8
-numpy==1.20.0
+numpy==1.22.0
 pandas==1.2.1
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
