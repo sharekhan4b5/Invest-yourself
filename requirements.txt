@@ -18,7 +18,7 @@ hyperlink==21.0.0
 idna==2.10
 incremental==17.5.0
 kiteconnect==3.9.2
-lxml==4.6.3
+lxml==4.9.1
 nsepy==0.8
 numpy==1.20.0
 pandas==1.2.1
