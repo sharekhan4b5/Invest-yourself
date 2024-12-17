@@ -2,7 +2,7 @@ flask
 gunicorn
 asyncio
 attrs==20.3.0
-autobahn==19.11.2
+autobahn==20.12.3
 Automat==20.2.0
 backtrader==1.9.76.123
 beautifulsoup4==4.9.3
